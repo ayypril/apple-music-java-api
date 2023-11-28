@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id "com.github.johnrengelman.shadow" version "8.1.1"
+}
+
+group 'pw.april'
+version '0.2.0-RELEASE'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+    implementation 'com.neovisionaries:nv-i18n:1.29'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+
+    implementation 'org.slf4j:slf4j-api:2.0.7'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testImplementation 'ch.qos.logback:logback-classic:1.4.8'
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+
+shadowJar {
+    relocate 'io.jsonwebtoken', 'pw.april.apple.music.shaded.io.jsonwebtoken'
+    relocate 'org.apache.httpcomponents', 'pw.april.apple.music.shaded.org.apache.httpcomponents'
+
+    relocate('junit.framework', 'b') {
+        include 'junit.framework.Test*'
+    }
+}
